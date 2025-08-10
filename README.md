@@ -68,7 +68,7 @@ Claves foráneas:
 "id_servicio" referencia a servicios(id_servicio).
 La clave compuesta evita duplicar la asignación del mismo servicio a un mismo cliente. Las claves foráneas permiten saber qué cliente tiene qué servicio contratado.
 
-## Tabla: "Asignaciones":
+## Tabla: "asignaciones":
 Clave primaria: id_asignacion (identificador único de la asignación).
 Claves foráneas:
 "id_empleado" referencia a empleados(id_empleado).
