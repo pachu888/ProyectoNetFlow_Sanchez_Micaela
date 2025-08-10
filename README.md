@@ -82,3 +82,21 @@ Claves foráneas:
 "id_cablemodem" referencia a cablemodems(id_cablemodem).
 "id_empleado" referencia a empleados(id_empleado).
 Permite registrar entradas, salidas y bajas de cablemódems, identificando quién realizó la acción y sobre qué equipo.
+
+# Vistas
+En el proyecto se crearon varias vistas para facilitar el acceso y análisis de datos importantes dentro de la base de datos netflow. Estas vistas funcionan como consultas predefinidas que combinan información de diferentes tablas, permitiendo obtener datos relevantes de forma rápida y sencilla.
+
+## Vista "vista_clientes_servicios"
+Permite obtener un listado de clientes junto con los servicios y planes que han contratado. Esta vista integra datos personales de los clientes con la descripción de los servicios y las características de los planes asociados, como velocidad, unidad y precio.
+
+## Vista "vista_stock_cablemodems"
+Esta vista muestra el stock actual de los cablemodems, indicando su modelo, marca, número de serie y estado (disponible, asignado o dado de baja). Además, incluye información histórica sobre los movimientos realizados, tales como entradas, salidas o bajas, con fechas y detalles.
+
+## Vista "vista_asignaciones_detalle"
+Ofrece un resumen de las asignaciones de cablemodems a clientes, mostrando qué empleado realizó la entrega, el cliente beneficiario, el equipo asignado y la fecha de entrega. Facilita el seguimiento y control de los equipos en uso.
+
+## Vista "vista_movimientos_stock"
+Muestra los movimientos de stock realizados por cada empleado, detallando el tipo de movimiento (entrada, salida o baja), el equipo involucrado, la fecha y el detalle del movimiento. Esta vista ayuda a monitorear la actividad del personal respecto al inventario.
+
+## Vista "vista_cablemodems_disponibles"
+Esta vista muestra un resumen del stock de cablemodems junto con su estado actual. Permite consultar fácilmente qué equipos están disponibles, asignados o dados de baja.
