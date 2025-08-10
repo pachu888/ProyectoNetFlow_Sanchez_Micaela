@@ -17,7 +17,7 @@ Llevar un historial de movimientos de stock, registrando entradas, salidas y baj
 De esta manera, el sistema permite una trazabilidad completa de los equipos, mejora la organización de los procesos internos y deja sentadas las bases para una futura integración con herramientas de análisis, atención al cliente o módulos contables.
 
 ## Situación problemática  
-NetFlow, una empresa que brinda servicios de internet, enfrenta varios problemas por no tener una base de datos organizada. La información de clientes, empleados, planes y equipos está dispersa o desactualizada, lo que genera errores frecuentes: no se sabe con certeza qué empleado entregó qué equipo, a qué cliente se le asignó, o en qué estado está cada cablemodem.
+La empresa enfrenta varios problemas por no tener una base de datos organizada. La información de clientes, empleados, planes y equipos está dispersa o desactualizada, lo que genera errores frecuentes: no se sabe con certeza qué empleado entregó qué equipo, a qué cliente se le asignó, o en qué estado está cada cablemodem.
 También se vuelve difícil hacer un seguimiento claro del stock o saber cuántos equipos están disponibles, asignados o dados de baja. Esto impide llevar una buena trazabilidad.
 Toda esta falta de organización hace más lento el trabajo, puede afectar la atención al cliente y limita el crecimiento. Con la implementación de esta base de datos se busca solucionar esos problemas y dejar todo registrado de manera clara y estructurada.
 
@@ -32,42 +32,43 @@ Además, la empresa mantiene un control de su inventario de equipos mediante un 
 
 ## Diagrama Entidad-Relación (E-R)  
 ![DER_ProyectoNetFlow.png](https://github.com/pachu888/ProyectoNetFlow_Sanchez/blob/main/DER_ProyectoNetFlow.png?raw=true)
+
 El diagrama representa las entidades principales: empleados, clientes, cablemodems, planes, servicios, asignaciones y movimientos de stock. También muestra las relaciones entre ellas, como la asignación de equipos a clientes y la asociación de servicios con planes.
 
-## Listado de tablas
+# Listado de tablas
 
-# Tabla "empleados":
+## Tabla "empleados":
 Clave primaria: id_empleado (identificador único del empleado).
 Claves foráneas: No tiene.
-La clave primaria id_empleado se seleccionó como identificador único para cada empleado en la empresa.
+La clave primaria "id_empleado" se seleccionó como identificador único para cada empleado en la empresa.
 
-# Tabla "clientes":
+## Tabla "clientes":
 Clave primaria: id_cliente (identificador único del cliente).
 Claves foráneas: No tiene.
-La clave primaria id_cliente identifica de manera única a cada cliente, evitando confusiones incluso si dos clientes tienen el mismo nombre o DNI.
+La clave primaria "id_cliente" identifica de manera única a cada cliente, evitando confusiones incluso si dos clientes tienen el mismo nombre o DNI.
 
-# Tabla "cablemodems":
+## Tabla "cablemodems":
 Clave primaria: id_cablemodem (identificador único del cablemódem).
 Claves foráneas: No tiene.
-Se utiliza para identificar cada equipo de manera única, facilitando su control de inventario y asignaciones.
+La clave primaria "id_cablemodem" se utiliza para identificar cada equipo de manera única, facilitando su control de inventario y asignaciones.
 
-# Tabla: "planes":
+## Tabla: "planes":
 Clave primaria: id_plan (identificador único del plan).
 Claves foráneas: No tiene.
-La clave primaria permite distinguir cada plan de internet por velocidad, unidad y precio.
+La clave primaria "id_plan" permite distinguir cada plan de internet por velocidad, unidad y precio.
 
-# Tabla: "servicios":
+## Tabla: "servicios":
 Clave primaria: id_servicio (identificador único del servicio).
 Clave foránea: "id_plan" hace referencia a planes.
 
-# Tabla: "cliente_servicio":
+## Tabla: "cliente_servicio":
 Clave primaria: Compuesta (id_cliente, id_servicio).
 Claves foráneas:
 "id_cliente" referencia a clientes(id_cliente).
 "id_servicio" referencia a servicios(id_servicio).
 La clave compuesta evita duplicar la asignación del mismo servicio a un mismo cliente. Las claves foráneas permiten saber qué cliente tiene qué servicio contratado.
 
-# Tabla: "Asignaciones":
+## Tabla: "Asignaciones":
 Clave primaria: id_asignacion (identificador único de la asignación).
 Claves foráneas:
 "id_empleado" referencia a empleados(id_empleado).
@@ -75,7 +76,7 @@ Claves foráneas:
 "id_cablemodem" referencia a cablemodems(id_cablemodem).
 Permite llevar un registro de qué empleado entregó un cablemódem a qué cliente, en qué fecha y con qué equipo.
 
-# Tabla: "movimientos_stock":
+## Tabla: "movimientos_stock":
 Clave primaria: id_movimiento (identificador único del movimiento de stock).
 Claves foráneas:
 "id_cablemodem" referencia a cablemodems(id_cablemodem).
