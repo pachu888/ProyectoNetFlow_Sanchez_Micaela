@@ -100,3 +100,42 @@ Muestra los movimientos de stock realizados por cada empleado, detallando el tip
 
 ## Vista "vista_cablemodems_disponibles"
 Esta vista muestra un resumen del stock de cablemodems junto con su estado actual. Permite consultar fácilmente qué equipos están disponibles, asignados o dados de baja.
+
+# Funciones
+En el proyecto se desarrollaron funciones para encapsular cálculos y verificaciones frecuentes dentro de la base de datos netflow. Estas funciones permiten obtener resultados específicos a partir de parámetros de entrada, brindando mayor eficiencia y evitando la repetición de lógica en múltiples consultas.
+
+## Función "fn_precio_plan"
+Esta función devuelve el precio de un plan según su ID. Se apoya en la tabla planes para extraer el valor y permite consultar rápidamente el costo asociado a cada plan.
+
+## Función "fn_cantidad_servicios"
+Esta función devuelve la cantidad de servicios que tiene un cliente determinado. Se apoya en la tabla cliente_servicio y resulta útil para conocer de forma directa cuántos servicios están contratados por cada cliente.
+
+## Función "fn_cablemodem_disponible"
+Esta función devuelve 1 si el cablemodem está disponible y 0 en caso contrario. Se apoya en la tabla cablemodems y permite validar la disponibilidad de equipos antes de ser asignados.
+
+# Procedimientos almacenados
+Se implementaron procedimientos almacenados para automatizar operaciones comunes en la gestión de la base de datos. Estos procedimientos permiten ejecutar varias acciones en bloque, con validaciones integradas y asegurando la consistencia de los datos, lo que facilita tareas administrativas como asignaciones y movimientos de stock.
+
+## Procedimiento "sp_alta_cliente_servicio"
+Este procedimiento permite dar de alta un servicio a un cliente, evitando duplicaciones en la relación. Trabaja sobre la tabla cliente_servicio y garantiza la consistencia de los servicios contratados.
+
+## Procedimiento "sp_registrar_movimiento_stock"
+Este procedimiento registra un movimiento de stock (entrada, salida o baja) y actualiza automáticamente el estado del cablemodem afectado. Opera sobre las tablas movimientos_stock y cablemodems, asegurando la trazabilidad del inventario.
+
+## Procedimiento "sp_asignar_cablemodem"
+Este procedimiento valida la disponibilidad de un cablemodem, lo asigna a un cliente y registra el movimiento de salida correspondiente en stock. Involucra las tablas asignaciones, cablemodems y movimientos_stock.
+
+# Triggers
+Se definieron distintos triggers para garantizar la integridad de los datos y automatizar cambios en las tablas según eventos específicos. Estos disparadores se ejecutan de manera automática ante operaciones como inserciones o eliminaciones, asegurando que los estados de los cablemodems y las asignaciones se mantengan siempre consistentes con las reglas de negocio.
+
+## Trigger "trg_asignacion_before_insert"
+Valida que un cablemodem solo pueda asignarse si está en estado disponible. Se ejecuta antes de insertar en la tabla asignaciones.
+
+## Trigger "trg_asignacion_after_insert"
+Actualiza automáticamente el estado del cablemodem a “asignado” luego de registrarse una nueva asignación. Afecta a las tablas asignaciones y cablemodems.
+
+## Trigger "trg_asignacion_after_delete"
+Restaura el estado de un cablemodem a “disponible” cuando se elimina una asignación. Involucra a las tablas asignaciones y cablemodems.
+
+## Trigger "trg_movimiento_stock_after_insert"
+Actualiza el estado de un cablemodem según el tipo de movimiento registrado (entrada, salida o baja). Se ejecuta tras insertar un registro en la tabla movimientos_stock.
