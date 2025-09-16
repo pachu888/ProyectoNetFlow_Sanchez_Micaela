@@ -42,24 +42,64 @@ Clave primaria: id_empleado (identificador único del empleado).
 Claves foráneas: No tiene.
 La clave primaria "id_empleado" se seleccionó como identificador único para cada empleado en la empresa.
 
+| Campo        | Tipo        | Restricciones                  |
+|--------------|-------------|--------------------------------|
+| id_empleado  | INT         | PK, AUTO_INCREMENT, NOT NULL   |
+| nombre       | VARCHAR(50) | NOT NULL                       |
+| apellido     | VARCHAR(50) | NOT NULL                       |
+| dni          | INT         | UNIQUE, NOT NULL               |
+| puesto       | VARCHAR(50) |                                |
+
 ## Tabla "clientes":
 Clave primaria: id_cliente (identificador único del cliente).
 Claves foráneas: No tiene.
 La clave primaria "id_cliente" identifica de manera única a cada cliente, evitando confusiones incluso si dos clientes tienen el mismo nombre o DNI.
+
+| Campo       | Tipo        | Restricciones                  |
+|-------------|-------------|--------------------------------|
+| id_cliente  | INT         | PK, AUTO_INCREMENT, NOT NULL   |
+| nombre      | VARCHAR(50) | NOT NULL                       |
+| apellido    | VARCHAR(50) | NOT NULL                       |
+| dni         | INT         | UNIQUE, NOT NULL               |
+| direccion   | VARCHAR(80) | NOT NULL                       |
+| telefono    | VARCHAR(30) |                                |
+| email       | VARCHAR(50) | UNIQUE                         |
 
 ## Tabla "cablemodems":
 Clave primaria: id_cablemodem (identificador único del cablemódem).
 Claves foráneas: No tiene.
 La clave primaria "id_cablemodem" se utiliza para identificar cada equipo de manera única, facilitando su control de inventario y asignaciones.
 
+| Campo        | Tipo        | Restricciones                                |
+|--------------|-------------|----------------------------------------------|
+| id_cablemodem| INT         | PK, AUTO_INCREMENT, NOT NULL                 |
+| modelo       | VARCHAR(50) | NOT NULL                                     |
+| marca        | VARCHAR(50) | NOT NULL                                     |
+| nro_serie    | VARCHAR(50) | UNIQUE, NOT NULL                             |
+| estado       | ENUM        | valores: ('disponible','asignado','baja'), DEFAULT 'disponible' |
+
 ## Tabla: "planes":
 Clave primaria: id_plan (identificador único del plan).
 Claves foráneas: No tiene.
 La clave primaria "id_plan" permite distinguir cada plan de internet por velocidad, unidad y precio.
 
+| Campo     | Tipo         | Restricciones                  |
+|-----------|--------------|--------------------------------|
+| id_plan   | INT          | PK, AUTO_INCREMENT, NOT NULL   |
+| nombre    | VARCHAR(50)  |                                |
+| velocidad | INT          | NOT NULL                       |
+| unidad    | VARCHAR(10)  | NOT NULL                       |
+| precio    | DECIMAL(10,2)|                                |
+
 ## Tabla: "servicios":
 Clave primaria: id_servicio (identificador único del servicio).
 Clave foránea: "id_plan" hace referencia a planes.
+
+| Campo       | Tipo         | Restricciones                                    |
+|-------------|--------------|--------------------------------------------------|
+| id_servicio | INT          | PK, AUTO_INCREMENT, NOT NULL                     |
+| descripcion | VARCHAR(100) |                                                  |
+| id_plan     | INT          | FK → planes(id_plan), NOT NULL                   |
 
 ## Tabla: "cliente_servicio":
 Clave primaria: Compuesta (id_cliente, id_servicio).
@@ -67,6 +107,11 @@ Claves foráneas:
 "id_cliente" referencia a clientes(id_cliente).
 "id_servicio" referencia a servicios(id_servicio).
 La clave compuesta evita duplicar la asignación del mismo servicio a un mismo cliente. Las claves foráneas permiten saber qué cliente tiene qué servicio contratado.
+
+| Campo      | Tipo | Restricciones                                    |
+|------------|------|--------------------------------------------------|
+| id_cliente | INT  | PK (compuesta), FK → clientes(id_cliente), NOT NULL |
+| id_servicio| INT  | PK (compuesta), FK → servicios(id_servicio), NOT NULL |
 
 ## Tabla: "asignaciones":
 Clave primaria: id_asignacion (identificador único de la asignación).
@@ -76,12 +121,29 @@ Claves foráneas:
 "id_cablemodem" referencia a cablemodems(id_cablemodem).
 Permite llevar un registro de qué empleado entregó un cablemódem a qué cliente, en qué fecha y con qué equipo.
 
+| Campo        | Tipo | Restricciones                                    |
+|--------------|------|--------------------------------------------------|
+| id_asignacion| INT  | PK, AUTO_INCREMENT, NOT NULL                     |
+| id_empleado  | INT  | FK → empleados(id_empleado), NOT NULL            |
+| id_cliente   | INT  | FK → clientes(id_cliente), NOT NULL              |
+| id_cablemodem| INT  | FK → cablemodems(id_cablemodem), NOT NULL        |
+| fecha_entrega| DATE | NOT NULL                                         |
+
 ## Tabla: "movimientos_stock":
 Clave primaria: id_movimiento (identificador único del movimiento de stock).
 Claves foráneas:
 "id_cablemodem" referencia a cablemodems(id_cablemodem).
 "id_empleado" referencia a empleados(id_empleado).
 Permite registrar entradas, salidas y bajas de cablemódems, identificando quién realizó la acción y sobre qué equipo.
+
+| Campo         | Tipo         | Restricciones                                    |
+|---------------|--------------|--------------------------------------------------|
+| id_movimiento | INT          | PK, AUTO_INCREMENT, NOT NULL                     |
+| id_cablemodem | INT          | FK → cablemodems(id_cablemodem), NOT NULL        |
+| id_empleado   | INT          | FK → empleados(id_empleado), NOT NULL            |
+| tipo_movimiento | ENUM       | valores: ('entrada','salida','baja'), NOT NULL   |
+| fecha         | DATE         |                                                  |
+| detalle       | VARCHAR(100) |                                                  |
 
 # Vistas
 En el proyecto se crearon varias vistas para facilitar el acceso y análisis de datos importantes dentro de la base de datos netflow. Estas vistas funcionan como consultas predefinidas que combinan información de diferentes tablas, permitiendo obtener datos relevantes de forma rápida y sencilla.
