@@ -358,3 +358,15 @@ VALUES (1, 3, 'salida', '2025-09-16', 'Asignado a cliente ID 5');
 
 -- Confirmamos los cambios
 COMMIT;
+
+-- ERROR: intento de insertar un cliente con mismo DNI
+INSERT INTO clientes (nombre, apellido, dni, direccion, telefono, email)
+VALUES ('Prueba', 'Duplicado', 34111222, 'Falsa 123', '3519998888', 'duplicado@test.com');
+
+SELECT fn_precio_plan(2) AS precio_plan_estandar; 
+
+SELECT fn_cantidad_servicios(1) AS servicios_cliente_1;
+
+SELECT fn_cablemodem_disponible(1) AS cablemodem_1_disponible;
+
+CALL sp_asignar_cablemodem(1, 2, 4, '2025-09-16');
